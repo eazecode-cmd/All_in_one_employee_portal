@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_profile" name="My Profile">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Profile</t>
+            </t>
+
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0">Edit Profile Information</h4>
+                            </div>
+                            <div class="card-body p-4">
+                                <form action="/my/profile/edit" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    
+                                    <div class="row mb-4">
+                                        <div class="col-md-4 text-center">
+                                            <div class="profile-image-container mb-3">
+                                                <img t-if="employee.image_1920" t-att-src="image_data_uri(employee.image_1920)" class="rounded-circle img-thumbnail shadow-sm" style="width: 150px; height: 150px; object-fit: cover;"/>
+                                                <img t-if="not employee.image_1920" src="/web/static/img/placeholder.png" class="rounded-circle img-thumbnail shadow-sm" style="width: 150px; height: 150px; object-fit: cover;"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="image_1920" class="form-label small text-muted">Change Photo</label>
+                                                <input type="file" class="form-control form-control-sm" id="image_1920" name="image_1920" accept="image/*"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Full Name</label>
+                                                <input type="text" class="form-control" id="name" name="name" t-att-value="employee.name" required="required"/>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="work_email" class="form-label">Work Email</label>
+                                                    <input type="email" class="form-control" id="work_email" name="work_email" t-att-value="employee.work_email"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="work_phone" class="form-label">Work Phone</label>
+                                                    <input type="text" class="form-control" id="work_phone" name="work_phone" t-att-value="employee.work_phone"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="private_email" class="form-label">Private Email</label>
+                                                    <input type="email" class="form-control" id="private_email" name="private_email" t-att-value="employee.private_email"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="private_phone" class="form-label">Private Phone</label>
+                                                    <input type="text" class="form-control" id="private_phone" name="private_phone" t-att-value="employee.private_phone"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="birthday" class="form-label">Date of Birth</label>
+                                                    <input type="date" class="form-control" id="birthday" name="birthday" t-att-value="employee.birthday"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="private_street" class="form-label">Private Address</label>
+                                                    <input type="text" class="form-control" id="private_street" name="private_street" t-att-value="employee.private_street" placeholder="Street, City, etc."/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end gap-2 border-top pt-4">
+                                        <a href="/my" class="btn btn-light px-4">Cancel</a>
+                                        <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

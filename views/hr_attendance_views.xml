@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_attendance_tree_inherit_gps" model="ir.ui.view">
+        <field name="name">hr.attendance.tree.inherit.gps</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='check_out']" position="after">
+                <field name="in_latitude" optional="hide"/>
+                <field name="in_longitude" optional="hide"/>
+                <field name="out_latitude" optional="hide"/>
+                <field name="out_longitude" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_form_inherit_gps" model="ir.ui.view">
+        <field name="name">hr.attendance.form.inherit.gps</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="GPS Location Tracking">
+                    <group string="Check-In">
+                        <field name="in_latitude"/>
+                        <field name="in_longitude"/>
+                        <field name="in_address"/>
+                    </group>
+                    <group string="Check-Out">
+                        <field name="out_latitude"/>
+                        <field name="out_longitude"/>
+                        <field name="out_address"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

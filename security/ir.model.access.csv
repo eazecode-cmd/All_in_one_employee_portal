@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_portal,hr.employee.portal,hr.model_hr_employee,base.group_portal,1,1,0,0
+access_hr_payslip_portal,hr.payslip.portal,hr_payroll.model_hr_payslip,base.group_portal,1,0,0,0
+access_hr_expense_portal,hr.expense.portal,hr_expense.model_hr_expense,base.group_portal,1,1,0,0
+access_planning_slot_portal,planning.slot.portal,planning.model_planning_slot,base.group_portal,1,0,0,0
+access_crm_lead_portal,crm.lead.portal,crm.model_crm_lead,base.group_portal,1,1,1,0
+access_sale_order_portal,sale.order.portal,sale.model_sale_order,base.group_portal,1,1,0,0
+access_portal_announcement_officer,portal.announcement.officer,model_portal_announcement,hr.group_hr_user,1,1,1,1
+access_portal_announcement_portal,portal.announcement.portal,model_portal_announcement,base.group_portal,1,0,0,0
+access_portal_announcement_user,portal.announcement.user,model_portal_announcement,base.group_user,1,0,0,0
+
+
+
+

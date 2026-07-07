@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_inherit_portal" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.portal</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <!-- Place the checkbox before the Related User label so it stays in the group layout -->
+            <xpath expr="//page[@name='hr_settings']//label[@for='user_id']" position="before">
+                <field name="grant_portal_access"/>
+            </xpath>
+
+            <!-- Remove the domain restriction in the XML view -->
+            <xpath expr="//page[@name='hr_settings']//field[@name='user_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+                <attribute name="context">{'active_test': False, 'no_share': False, 'fill_company': True}</attribute>
+            </xpath>
+
+            <!-- Add the portal tile access control group below Related User -->
+            <xpath expr="//page[@name='hr_settings']/group" position="after">
+                <group invisible="not grant_portal_access" string="Portal Tiles Access Control">
+                    <group>
+                        <field name="portal_show_profile"/>
+                        <field name="portal_show_attendance"/>
+                        <field name="portal_show_crm"/>
+                        <field name="portal_show_sales"/>
+                        <field name="portal_show_tasks"/>
+                    </group>
+                    <group>
+                        <field name="portal_show_timesheets"/>
+                        <field name="portal_show_leaves"/>
+                        <field name="portal_show_payroll"/>
+                        <field name="portal_show_expenses"/>
+                        <field name="portal_show_schedule"/>
+                        <field name="portal_show_announcement"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

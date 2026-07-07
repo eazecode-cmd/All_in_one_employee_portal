@@ -1,0 +1,2179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home" inherit_id="portal.portal_my_home" priority="100">
+        <!-- Add our dashboard before the default portal docs -->
+        <xpath expr="//div[hasclass('o_portal_my_home')]" position="before">
+            <div class="o_employee_portal_dashboard mt-4 mb-5" t-if="employee and employee.grant_portal_access">
+                <div class="container">
+                    <div class="row g-4">
+                        <!-- ROW 1: Profile, Attendance, CRM, Sale -->
+
+                        <!-- 1. Profile Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_profile">
+                            <a href="/my/profile" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/profile.png" alt="Profile" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">My Profile</h5>
+                                    <p class="card-text text-muted small">Personal Details</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 2. Attendance Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_attendance">
+                            <a href="/my/attendance" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/Attendense.png" alt="Attendance" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Attendance</h5>
+                                    <p class="card-text text-muted small">
+                                        <t t-if="dashboard_stats.get('attendance_status') == 'checked_in'">Currently In</t>
+                                        <t t-else="">Currently Out</t>
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 3. CRM Leads Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_crm">
+                            <a href="/my/leads" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/crm.png" alt="CRM Leads" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">CRM Leads</h5>
+                                    <p class="card-text text-muted small">Manage Opportunities</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 4. Sales Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_sales">
+                            <a href="/my/sales" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/sale.png" alt="Sales" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Sales</h5>
+                                    <p class="card-text text-muted small">Quotations &amp; Orders</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- ROW 2: Tasks, Timesheets, Time Off, Payroll -->
+
+                        <!-- 5. Tasks Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_tasks">
+                            <a href="/my/tasks" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/tasks.png" alt="Tasks" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Tasks</h5>
+                                    <p class="card-text text-muted small">Assigned Work</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 6. Timesheets Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_timesheets">
+                            <a href="/my/timesheets" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/timesheets.png" alt="Timesheets" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Timesheets</h5>
+                                    <p class="card-text text-muted small">Log Hours</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 7. Time Off Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_leaves">
+                            <a href="/my/leaves" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/time off.png" alt="Time Off" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Time Off</h5>
+                                    <p class="card-text text-muted small">Requests &amp; Balance</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 8. Payroll Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_payroll">
+                            <a href="/my/payroll" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/payroll.png" alt="Payroll" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Payroll</h5>
+                                    <p class="card-text text-muted small">Payslips &amp; History</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- ROW 3: Expenses, Schedule -->
+
+                        <!-- 9. Expenses Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_expenses">
+                            <a href="/my/expenses" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/expense.png" alt="Expenses" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Expenses</h5>
+                                    <p class="card-text text-muted small">Submit Receipts</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 10. Weekly Schedule Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_schedule">
+                            <a href="/my/schedule" class="o_portal_card shadow-sm border-0 text-decoration-none">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/schedule.png" alt="Schedule" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Schedule</h5>
+                                    <p class="card-text text-muted small">Shift Planning</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 11. Notice Board Tile -->
+                        <div class="col-6 col-md-4 col-lg-3" t-if="not employee or employee.portal_show_announcement">
+                            <a href="/my/announcements" class="o_portal_card shadow-sm border-0 text-decoration-none position-relative">
+                                <t t-if="dashboard_stats.get('unread_announcements_count')">
+                                    <span class="position-absolute badge rounded-circle bg-danger text-white d-flex align-items-center justify-content-center" 
+                                          style="top: 15px; right: 15px; width: 22px; height: 22px; font-size: 0.75rem; font-weight: bold; line-height: 1;">
+                                        <t t-esc="dashboard_stats['unread_announcements_count']"/>
+                                    </span>
+                                </t>
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-wrapper mb-3 d-flex align-items-center justify-content-center">
+                                        <img src="/All_in_one_employee_portal/static/description/announcement.png" alt="Notice Board" style="width: 50px; height: 50px; object-fit: contain;"/>
+                                    </div>
+                                    <h5 class="card-title text-dark">Notice Board</h5>
+                                    <p class="card-text text-muted small">News &amp; Notices</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Hide default Odoo portal home only when custom employee portal is active -->
+        <xpath expr="//div[hasclass('o_portal_my_home')]" position="attributes">
+            <attribute name="t-if">not employee or not employee.grant_portal_access</attribute>
+        </xpath>
+    </template>
+
+    <!-- Attendance Page Template -->
+    <template id="portal_my_attendance" name="My Attendance">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5 o_portal_attendance_page">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <!-- Check-in/out Action Card -->
+                        <div class="card shadow-sm border-0 mb-4 overflow-hidden">
+                            <div class="card-body p-5 text-center bg-white">
+                                <div class="mb-4">
+                                    <div class="attendance-icon-large mb-3">
+                                        <i t-attf-class="fa fa-clock-o fa-5x #{'text-success' if employee.attendance_state != 'checked_in' else 'text-danger'} animate-pulse"></i>
+                                    </div>
+                                    <h2 class="fw-bold">
+                                        <t t-if="employee.attendance_state == 'checked_in'">You are Checked In</t>
+                                        <t t-else="">You are Checked Out</t>
+                                    </h2>
+                                    <p class="text-muted">Recording your work hours with GPS location</p>
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button id="o_portal_attendance_toggle_btn" 
+                                            t-attf-class="btn btn-lg px-5 py-3 shadow-sm fw-bold #{'btn-danger' if employee.attendance_state == 'checked_in' else 'btn-success'}"
+                                            style="border-radius: 50px; min-width: 250px; font-size: 1.5rem;">
+                                        <i t-attf-class="fa #{'fa-sign-out' if employee.attendance_state == 'checked_in' else 'fa-sign-in'} me-2"></i>
+                                        <t t-if="employee.attendance_state == 'checked_in'">Check Out Now</t>
+                                        <t t-else="">Check In Now</t>
+                                    </button>
+                                </div>
+                                <div id="o_portal_attendance_status" class="mt-3 text-muted small">
+                                    <t t-if="employee.last_attendance_id and not employee.last_attendance_id.check_out">
+                                        Started at: <span t-field="employee.last_attendance_id.check_in" t-options='{"widget": "datetime", "format": "hh:mm a"}'/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Attendance History Table -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0 fw-bold">Recent Attendance History</h4>
+                                <span class="badge bg-primary rounded-pill">Last 10 Records</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 align-middle">
+                                        <thead style="background-color:#714B67;color:#fff;">
+                                            <tr>
+                                                <th class="ps-4">Date</th>
+                                                <th>Check In</th>
+                                                <th>Check Out</th>
+                                                <th class="text-center">Work Hours</th>
+                                                <th class="pe-4 text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="attendance_history_body">
+                                            <t t-foreach="attendances" t-as="att">
+                                                <tr>
+                                                    <td class="ps-4 fw-bold text-dark">
+                                                        <span t-field="att.check_in" t-options='{"widget": "date"}'/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-success"><i class="fa fa-sign-in me-1"></i> <span t-field="att.check_in" t-options='{"widget": "datetime", "format": "hh:mm a"}'/></span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="att.check_out">
+                                                            <span class="text-danger"><i class="fa fa-sign-out me-1"></i> <span t-field="att.check_out" t-options='{"widget": "datetime", "format": "hh:mm a"}'/></span>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="badge bg-success animate-pulse">Working...</span>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-if="att.worked_hours">
+                                                            <span class="fw-bold" t-esc="'%02d:%02d' % (int(att.worked_hours), int((att.worked_hours - int(att.worked_hours)) * 60))"/> hrs
+                                                        </t>
+                                                        <t t-else="">-</t>
+                                                    </td>
+                                                    <td class="pe-4 text-end">
+                                                        <t t-if="att.in_latitude">
+                                                            <i class="fa fa-map-marker text-primary" title="GPS Captured"></i>
+                                                        </t>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Time Off Page Template -->
+    <template id="portal_my_leaves" name="My Time Off">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <!-- Alert for success/error -->
+                        <div t-if="success" class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+                            <i class="fa fa-check-circle me-2"></i> Leave request submitted successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div t-if="error" class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+                            <i class="fa fa-exclamation-circle me-2"></i> <t t-esc="error"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold mb-0">Time Off &amp; Leaves</h2>
+                            <button type="button" class="btn btn-primary px-4 py-2 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#newLeaveModal">
+                                <i class="fa fa-plus me-2"></i> Request Time Off
+                            </button>
+                        </div>
+
+                        <!-- Leave Balances -->
+                        <div class="row g-3 mb-4">
+                            <t t-foreach="balances" t-as="balance">
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <div class="card shadow-sm border-0 h-100 text-center p-3" style="border-radius: 15px;">
+                                        <div class="text-muted small mb-1" t-esc="balance.get('name')"/>
+                                        <div class="h3 fw-bold mb-0 text-primary" t-esc="balance.get('remaining_leaves')"/>
+                                        <div class="text-muted x-small">Days Remaining</div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Leave History Table -->
+                        <div class="card shadow-sm border-0 overflow-hidden">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold">My Leave Requests</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 align-middle">
+                                        <thead style="background-color:#714B67;color:#fff;">
+                                            <tr>
+                                                <th class="ps-4">Leave Type</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Duration</th>
+                                                <th>Status</th>
+                                                <th class="pe-4 text-end">Reason</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="leaves" t-as="leave">
+                                                <tr>
+                                                    <td class="ps-4">
+                                                        <span class="fw-bold text-dark" t-field="leave.holiday_status_id.name"/>
+                                                    </td>
+                                                    <td><span t-field="leave.request_date_from" t-options='{"widget": "date"}'/></td>
+                                                    <td><span t-field="leave.request_date_to" t-options='{"widget": "date"}'/></td>
+                                                    <td><span t-field="leave.number_of_days"/> Days</td>
+                                                    <td>
+                                                        <span t-attf-class="badge rounded-pill px-3 py-2 #{'bg-success' if leave.state == 'validate' else 'bg-warning' if leave.state == 'confirm' else 'bg-danger' if leave.state == 'refuse' else 'bg-secondary'}" t-field="leave.state"/>
+                                                    </td>
+                                                    <td class="pe-4 text-end text-muted small">
+                                                        <span t-field="leave.name"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="not leaves">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-5 text-muted">
+                                                        <i class="fa fa-calendar-times-o fa-3x mb-3 d-block opacity-25"></i>
+                                                        No leave requests found.
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Leave Request Modal -->
+            <div class="modal fade" id="newLeaveModal" tabindex="-1" aria-labelledby="newLeaveModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                        <form action="/my/leaves/apply" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="modal-header border-0 pb-0">
+                                <h4 class="modal-title fw-bold" id="newLeaveModalLabel">New Leave Request</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small">Leave Type</label>
+                                    <select name="holiday_status_id" class="form-select" required="required">
+                                        <t t-foreach="leave_types" t-as="type">
+                                            <option t-att-value="type.id" t-esc="type.name"/>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">Start Date</label>
+                                        <input type="date" name="date_from" class="form-control" required="required"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">End Date</label>
+                                        <input type="date" name="date_to" class="form-control" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="mb-0">
+                                    <label class="form-label text-muted small">Reason</label>
+                                    <textarea name="name" class="form-control" rows="3" placeholder="Explain why you need this time off..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary px-4 shadow-sm fw-bold">Submit Request</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Payroll Page Template -->
+    <template id="portal_my_payroll" name="My Payroll">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold mb-0">Payroll &amp; Payslips</h2>
+                        </div>
+
+                        <!-- Payslip History Table -->
+                        <div class="card shadow-sm border-0 overflow-hidden">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold">My Payslips</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 align-middle">
+                                        <thead style="background-color:#714B67;color:#fff;">
+                                            <tr>
+                                                <th class="ps-4">Reference</th>
+                                                <th>Period</th>
+                                                <th>Basic Salary</th>
+                                                <th>Net Salary</th>
+                                                <th>Status</th>
+                                                <th class="pe-4 text-end">Download</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="payslips" t-as="slip">
+                                                <tr>
+                                                    <td class="ps-4">
+                                                        <span class="fw-bold text-dark" t-field="slip.number"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="slip.date_from" t-options='{"widget": "date", "format": "MMM YYYY"}'/>
+                                                    </td>
+                                                    <td><span t-field="slip.basic_wage" t-options='{"widget": "monetary", "display_currency": slip.company_id.currency_id}'/></td>
+                                                    <td><span class="fw-bold text-primary" t-field="slip.net_wage" t-options='{"widget": "monetary", "display_currency": slip.company_id.currency_id}'/></td>
+                                                    <td>
+                                                        <span t-attf-class="badge rounded-pill px-3 py-2 #{'bg-success' if slip.state in ['done', 'paid'] else 'bg-warning'}" t-field="slip.state"/>
+                                                    </td>
+                                                    <td class="pe-4 text-end">
+                                                        <a t-attf-href="/my/payslip/download/#{slip.id}" target="_blank" class="btn btn-sm btn-outline-primary rounded-circle" title="Download PDF">
+                                                            <i class="fa fa-download"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="not payslips">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-5 text-muted">
+                                                        <i class="fa fa-file-pdf-o fa-3x mb-3 d-block opacity-25"></i>
+                                                        No payslips found.
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Tasks Page Template -->
+    <template id="portal_my_tasks" name="My Tasks">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold mb-0">My Assigned Tasks</h2>
+                            <a href="/my/timesheets" class="btn btn-outline-primary px-4 py-2 shadow-sm fw-bold">
+                                <i class="fa fa-calendar-check-o me-2"></i> View Timesheets
+                            </a>
+                        </div>
+
+                        <!-- Tasks Table -->
+                        <div class="card shadow-sm border-0 overflow-hidden">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold">Assigned Tasks</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 align-middle">
+                                        <thead class="bg-tasks-header">
+                                            <tr>
+                                                <th class="ps-4">Task Name</th>
+                                                <th>Project</th>
+                                                <th>Assigned By</th>
+                                                <th>Deadline</th>
+                                                <th class="pe-4 text-end">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="tasks" t-as="task">
+                                                <tr>
+                                                    <td class="ps-4">
+                                                        <a t-attf-href="/my/task/#{task.id}" class="fw-bold text-primary text-decoration-none" t-field="task.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="task.project_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="task.user_ids">
+                                                            <span t-esc="task.user_ids[0].name"/>
+                                                        </t>
+                                                        <t t-else="">-</t>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="task.date_deadline">
+                                                            <span t-field="task.date_deadline" t-options='{"widget": "date"}'/>
+                                                        </t>
+                                                        <t t-else="">-</t>
+                                                    </td>
+                                                    <td class="pe-4 text-end">
+                                                        <span t-attf-class="badge rounded-pill px-3 py-2 #{'bg-success' if task.state == '1_done' else 'bg-info' if task.is_task_started else 'bg-primary'}">
+                                                            <t t-if="task.state == '1_done'">Done</t>
+                                                            <t t-elif="task.is_task_started">In Progress</t>
+                                                            <t t-else="">New</t>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="not tasks">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-5 text-muted">
+                                                        <i class="fa fa-tasks fa-3x mb-3 d-block opacity-25"></i>
+                                                        No assigned tasks found.
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Task Detail Page Template (Premium UI) -->
+    <template id="portal_my_task_detail" name="Task Detail">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5 o_task_detail_page">
+                <div class="row">
+                    <!-- Task Header -->
+                    <div class="col-12 mb-4">
+                        <div class="card shadow-sm border-0 bg-white p-4 overflow-hidden position-relative">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb mb-1" style="background:none; padding:0;">
+                                            <li class="breadcrumb-item"><a href="/my/tasks">Tasks</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page"><t t-esc="task.name"/></li>
+                                        </ol>
+                                    </nav>
+                                    <h1 class="fw-bold mb-0 text-dark"><t t-esc="task.name"/></h1>
+                                    <div class="mt-2">
+                                        <span t-attf-class="badge rounded-pill px-3 py-2 #{'bg-success' if task.state == '1_done' else 'bg-primary'}" t-field="task.stage_id.name"/>
+                                        <span class="ms-2 text-muted small"><i class="fa fa-folder-open me-1"></i> <t t-esc="task.project_id.name"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="col-lg-8">
+                        <!-- Description Card -->
+                        <div class="card shadow-sm border-0 mb-4 h-100">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold"><i class="fa fa-file-text-o text-primary me-2"></i>Task Description</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="task-description-content text-dark" style="font-size: 1.1rem; line-height: 1.6;">
+                                    <t t-if="task.description">
+                                        <t t-out="task.description"/>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="text-muted italic">No description provided for this task.</p>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Content -->
+                    <div class="col-lg-4">
+                        <!-- Task Control Card (The Red Box) - NOW ON TOP -->
+                        <div class="card shadow-sm border-0 bg-danger text-white p-4 text-center mb-4">
+                            <!-- State: Not Started -->
+                            <div t-if="not task.is_task_started and task.state != '1_done'">
+                                <i class="fa fa-play-circle fa-3x mb-3 text-white"></i>
+                                <h5 class="fw-bold text-white">Ready to Start?</h5>
+                                <p class="small opacity-75">Click start to begin tracking your time on this task.</p>
+                                <a t-attf-href="/my/task/start/#{task.id}" class="btn btn-success btn-lg rounded-pill px-5 fw-bold mt-2 shadow-sm border-0">
+                                    <i class="fa fa-play me-2"/> START TASK
+                                </a>
+                            </div>
+
+                            <!-- State: In Progress -->
+                            <div t-elif="task.is_task_started">
+                                <div class="timer-display mb-3">
+                                    <h2 class="fw-bold mb-0 text-white" id="task_timer"><t t-esc="elapsed_time"/></h2>
+                                    <span class="small opacity-75">TIME ELAPSED</span>
+                                </div>
+                                <h5 class="fw-bold text-white">Task in Progress</h5>
+                                <a t-attf-href="/my/task/finish/#{task.id}" class="btn btn-warning btn-lg rounded-pill px-5 fw-bold mt-2 shadow-sm border-0 text-dark">
+                                    <i class="fa fa-stop-circle me-2"/> FINISH TASK
+                                </a>
+                            </div>
+
+                            <!-- State: Completed -->
+                            <div t-else="">
+                                <i class="fa fa-check-circle fa-3x mb-3 text-white"></i>
+                                <h5 class="fw-bold text-white">Task Completed</h5>
+                                <p class="small opacity-75">This task has been marked as finished.</p>
+                                <a t-attf-href="/my/task/reopen/#{task.id}" class="btn btn-success btn-lg rounded-pill px-5 fw-bold mt-2 shadow-sm border-0">
+                                    <i class="fa fa-refresh me-2"/> Re-open Task
+                                </a>
+                                <div class="mt-3">
+                                    <a href="/my/timesheets" class="btn btn-link text-white text-decoration-none small opacity-75 p-0">
+                                        <i class="fa fa-calendar-check-o me-1"/> View Timesheets
+                                    </a>
+                                </div>
+                            </div>
+
+                            <hr class="border-white opacity-25 my-4"/>
+                            <div class="small">
+                                <a href="/my/timesheets" class="text-white text-decoration-none opacity-75">
+                                    <i class="fa fa-history me-1"/> View Work History
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Task Stats Card - NOW BELOW -->
+                        <div class="card shadow-sm border-0 mb-4 overflow-hidden">
+                            <div class="card-header bg-primary text-white border-0 py-3">
+                                <h5 class="mb-0 fw-bold">Task Details</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                                        <span class="text-muted"><i class="fa fa-user-circle me-2"></i> Assigned By</span>
+                                        <span class="fw-bold text-dark">
+                                            <t t-if="task.user_ids" t-esc="task.user_ids[0].name"/>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                                        <span class="text-muted"><i class="fa fa-calendar me-2"></i> Created On</span>
+                                        <span class="text-dark" t-field="task.create_date" t-options='{"widget": "date"}'/>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-3 text-danger">
+                                        <span class=""><i class="fa fa-calendar-times-o me-2"></i> Deadline</span>
+                                        <span class="fw-bold">
+                                            <t t-if="task.date_deadline">
+                                                <span t-field="task.date_deadline" t-options='{"widget": "date"}'/>
+                                            </t>
+                                            <t t-else="">None</t>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chatter / Communication -->
+                <div class="row mt-4 mb-5">
+                    <div class="col-12">
+                        <div class="card shadow-sm border-0 overflow-hidden">
+                            <div class="card-header bg-white border-0 py-3 d-flex align-items-center">
+                                <i class="fa fa-comments-o fa-2x text-primary me-3"></i>
+                                <h4 class="mb-0 fw-bold">Discussion &amp; Feedback</h4>
+                            </div>
+                            <div class="card-body p-4" style="background-color: #f8f9fc;">
+                                <t t-call="portal.message_thread">
+                                    <t t-set="object" t-value="task"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    setInterval(function() {
+                        var timerElement = document.getElementById('task_timer');
+                        if (timerElement) {
+                            var parts = timerElement.innerText.split(':');
+                            if (parts.length === 3) {
+                                var hours = parseInt(parts[0]);
+                                var minutes = parseInt(parts[1]);
+                                var seconds = parseInt(parts[2]);
+                                
+                                seconds++;
+                                if (seconds >= 60) {
+                                    seconds = 0;
+                                    minutes++;
+                                }
+                                if (minutes >= 60) {
+                                    minutes = 0;
+                                    hours++;
+                                }
+                                
+                                timerElement.innerText = 
+                                    (hours &lt; 10 ? "0" + hours : hours) + ":" + 
+                                    (minutes &lt; 10 ? "0" + minutes : minutes) + ":" + 
+                                    (seconds &lt; 10 ? "0" + seconds : seconds);
+                            }
+                        }
+                    }, 1000);
+                </script>
+            </div>
+        </t>
+    </template>
+
+    <!-- Timesheets Page Template -->
+    <template id="portal_my_timesheets" name="My Timesheets">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <!-- Alert for success/error -->
+                        <div t-if="success" class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+                            <i class="fa fa-check-circle me-2"></i> Timesheet logged successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div t-if="error" class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+                            <i class="fa fa-exclamation-circle me-2"></i> <t t-esc="error"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold mb-0">My Timesheets</h2>
+                            <button type="button" class="btn btn-success px-4 py-2 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#logWorkModal">
+                                <i class="fa fa-plus me-2"></i> Log Work Hours
+                            </button>
+                        </div>
+
+                        <!-- Timesheet History Table -->
+                        <div class="card shadow-sm border-0 overflow-hidden">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold">Recent Work Logs</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 align-middle">
+                                        <thead style="background-color:#714B67;color:#fff;">
+                                            <tr>
+                                                <th class="ps-4">Date</th>
+                                                <th>Task</th>
+                                                <th>Description</th>
+                                                <th class="pe-4 text-end">Hours</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="timesheets" t-as="ts">
+                                                <tr>
+                                                    <td class="ps-4">
+                                                        <span t-field="ts.date" t-options='{"widget": "date"}'/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="ts.task_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted" t-field="ts.name"/>
+                                                    </td>
+                                                    <td class="pe-4 text-end">
+                                                        <span class="fw-bold text-dark" t-field="ts.unit_amount"/> hrs
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="not timesheets">
+                                                <tr>
+                                                    <td colspan="4" class="text-center py-5 text-muted">
+                                                        <i class="fa fa-clock-o fa-3x mb-3 d-block opacity-25"></i>
+                                                        No timesheet entries found.
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Work Modal -->
+            <div class="modal fade" id="logWorkModal" tabindex="-1" aria-labelledby="logWorkModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                        <form action="/my/timesheets/log" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="modal-header border-0 pb-0">
+                                <h4 class="modal-title fw-bold" id="logWorkModalLabel">Log Work Hours</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small">Select Task</label>
+                                    <select name="task_id" class="form-select" required="required">
+                                        <t t-foreach="tasks" t-as="t">
+                                            <option t-att-value="t.id" t-esc="'[%s] %s' % (t.project_id.name, t.name)"/>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">Date</label>
+                                        <input type="date" name="date" class="form-control" required="required" t-att-value="datetime.date.today().strftime('%Y-%m-%d')"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">Hours</label>
+                                        <input type="number" step="0.25" name="unit_amount" class="form-control" required="required" placeholder="0.00"/>
+                                    </div>
+                                </div>
+                                <div class="mb-0">
+                                    <label class="form-label text-muted small">Work Description</label>
+                                    <textarea name="name" class="form-control" rows="3" placeholder="What did you work on?" required="required"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success px-4 shadow-sm fw-bold">Log Hours</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Expenses Page Template -->
+    <template id="portal_my_expenses" name="My Expenses">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <!-- Alert for success/error -->
+                        <div t-if="success" class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+                            <i class="fa fa-check-circle me-2"></i> Expense claim submitted successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div t-if="error" class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+                            <i class="fa fa-exclamation-circle me-2"></i> <t t-esc="error"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold mb-0">Expenses &amp; Receipts</h2>
+                            <button type="button" class="btn btn-dark px-4 py-2 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#newExpenseModal">
+                                <i class="fa fa-plus me-2"></i> Submit Expense Claim
+                            </button>
+                        </div>
+
+                        <!-- Expenses History Table -->
+                        <div class="card shadow-sm border-0 overflow-hidden">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h4 class="mb-0 fw-bold">My Expense Claims</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 align-middle">
+                                        <thead style="background-color:#714B67;color:#fff;">
+                                            <tr>
+                                                <th class="ps-4">Date</th>
+                                                <th>Description</th>
+                                                <th>Category</th>
+                                                <th>Payment Mode</th>
+                                                <th>Total Amount</th>
+                                                <th>Status</th>
+                                                <th class="pe-4 text-end">Receipt</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="expenses" t-as="exp">
+                                                <tr>
+                                                    <td class="ps-4 fw-bold text-dark">
+                                                        <span t-field="exp.date" t-options='{"widget": "date"}'/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="exp.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="exp.product_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="exp.payment_mode == 'own_account'">
+                                                            <span class="text-muted small"><i class="fa fa-user me-1"></i> Reimburse</span>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="text-muted small"><i class="fa fa-credit-card me-1"></i> Company Paid</span>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <span class="fw-bold text-primary" t-field="exp.total_amount_currency" t-options='{"widget": "monetary", "display_currency": exp.currency_id}'/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-attf-class="badge rounded-pill px-3 py-2 #{'bg-secondary' if exp.state == 'draft' else 'bg-info' if exp.state == 'reported' else 'bg-primary' if exp.state == 'approved' else 'bg-success' if exp.state == 'done' else 'bg-danger' if exp.state == 'refused' else 'bg-dark'}">
+                                                            <t t-if="exp.state == 'draft'">Draft</t>
+                                                            <t t-elif="exp.state == 'reported'">Submitted</t>
+                                                            <t t-elif="exp.state == 'approved'">Approved</t>
+                                                            <t t-elif="exp.state == 'done'">Paid</t>
+                                                            <t t-elif="exp.state == 'refused'">Refused</t>
+                                                            <t t-else=""><span t-field="exp.state"/></t>
+                                                        </span>
+                                                    </td>
+                                                    <td class="pe-4 text-end">
+                                                        <t t-if="exp.id in expense_ids_with_attachment">
+                                                            <a t-attf-href="/my/expense/receipt/#{exp.id}" target="_blank" class="btn btn-sm btn-outline-dark rounded-circle" title="Download Receipt">
+                                                                <i class="fa fa-download"></i>
+                                                            </a>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="text-muted small italic">No Receipt</span>
+                                                        </t>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <t t-if="not expenses">
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-5 text-muted">
+                                                        <i class="fa fa-file-text-o fa-3x mb-3 d-block opacity-25"></i>
+                                                        No expense claims found.
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Expense Request Modal -->
+            <div class="modal fade" id="newExpenseModal" tabindex="-1" aria-labelledby="newExpenseModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                        <form action="/my/expense/submit" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="modal-header border-0 pb-0">
+                                <h4 class="modal-title fw-bold" id="newExpenseModalLabel">Submit Expense Claim</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small">Expense Category</label>
+                                    <select name="product_id" class="form-select" required="required">
+                                        <t t-foreach="expense_categories" t-as="cat">
+                                            <option t-att-value="cat.id" t-esc="cat.name"/>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small">Description</label>
+                                    <input type="text" name="name" class="form-control" required="required" placeholder="e.g. Travel fuel or Business dinner"/>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">Date</label>
+                                        <input type="date" name="date" class="form-control" required="required" t-att-value="datetime.date.today().strftime('%Y-%m-%d')"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">Amount</label>
+                                        <input type="number" step="0.01" name="unit_amount" class="form-control" required="required" placeholder="0.00"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">Currency</label>
+                                        <select name="currency_id" class="form-select" required="required">
+                                            <t t-foreach="currencies" t-as="curr">
+                                                <option t-att-value="curr.id" t-att-selected="curr.id == employee.company_id.currency_id.id" t-esc="curr.name"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted small">Payment Mode</label>
+                                        <select name="payment_mode" class="form-select" required="required">
+                                            <option value="own_account">Reimburse Employee</option>
+                                            <option value="company_account">Paid by Company</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-0">
+                                    <label class="form-label text-muted small">Upload Receipt (PDF or Image)</label>
+                                    <input type="file" name="receipt_file" class="form-control" accept="image/*,application/pdf"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-dark px-4 shadow-sm fw-bold">Submit Expense</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Schedule Page Template -->
+    <template id="portal_my_schedule" name="My Weekly Schedule">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        
+                        <!-- Top Header & Week Navigation -->
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                            <div>
+                                <h2 class="fw-bold mb-1">Work Schedule</h2>
+                                <p class="text-muted small mb-0">
+                                    Planned shifts for 
+                                    <span class="fw-bold text-dark" t-esc="monday.strftime('%b %d')"/> 
+                                    to 
+                                    <span class="fw-bold text-dark" t-esc="sunday.strftime('%b %d, %Y')"/>
+                                </p>
+                            </div>
+                            
+                            <!-- Sleek Week Toggle -->
+                            <div class="btn-group mt-3 mt-md-0 shadow-sm rounded-pill p-1 bg-white border">
+                                <a href="/my/schedule" t-attf-class="btn rounded-pill px-4 py-2 fw-bold text-sm #{'btn-dark text-white' if week_type == 'current' else 'btn-link text-muted text-decoration-none'}">
+                                    This Week
+                                </a>
+                                <a href="/my/schedule?week=next" t-attf-class="btn rounded-pill px-4 py-2 fw-bold text-sm #{'btn-dark text-white' if week_type == 'next' else 'btn-link text-muted text-decoration-none'}">
+                                    Next Week
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Stats Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color:#714B67;color:#fff;">
+                                            <i class="fa fa-calendar fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Total Shifts</h6>
+                                            <h3 class="fw-bold mb-0 text-dark" t-esc="total_shifts"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3" style="background-color:#714B67;color:#fff;">
+                                            <i class="fa fa-clock-o fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Total Hours</h6>
+                                            <h3 class="fw-bold mb-0 text-dark"><t t-esc="'%.1f' % total_hours"/> hrs</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle p-3 me-3 " style="background-color:#714B67;color:#fff;">
+                                            <i class="fa fa-briefcase fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Primary Role</h6>
+                                            <h3 class="fw-bold mb-0 text-dark text-truncate" style="max-width: 180px;" t-esc="primary_role"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Grid Agenda -->
+                        <div class="row">
+                            <t t-foreach="days_info" t-as="day">
+                                <div class="col-lg-12 mb-3">
+                                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                        <div class="card-body p-4">
+                                            <div class="row align-items-center">
+                                                
+                                                <!-- Date & Day Info -->
+                                                <div class="col-md-3 mb-3 mb-md-0">
+                                                    <div class="d-flex flex-row flex-md-column align-items-baseline align-items-md-start">
+                                                        <h4 class="fw-bold text-dark mb-0 me-2 me-md-0" t-esc="day['name']"/>
+                                                        <span class="text-muted small" t-esc="day['date'].strftime('%B %d, %Y')"/>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Shifts Content -->
+                                                <div class="col-md-9">
+                                                    
+                                                    <!-- Rest / Unscheduled Day -->
+                                                    <t t-if="not day['shifts']">
+                                                        <div class="d-flex align-items-center p-3 rounded-3  border border-dashed ">
+                                                            <i class="fa fa-coffee fa-lg me-3 text-muted opacity-50"></i>
+                                                            <span class="small font-italic">No shifts scheduled. Rest Day.</span>
+                                                        </div>
+                                                    </t>
+
+                                                    <!-- Scheduled Shifts -->
+                                                    <t t-else="">
+                                                        <t t-foreach="day['shifts']" t-as="shift">
+                                                            <div class="p-3 mb-2 last-mb-0 rounded-4 border bg-white shadow-xs position-relative overflow-hidden shift-card">
+                                                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                                                                    <div>
+                                                                        <div class="d-flex align-items-center flex-wrap mb-2">
+                                                                            <!-- Shift Time -->
+                                                                            <span class="fw-bold text-dark me-3">
+                                                                                <i class="fa fa-clock-o text-muted me-1"></i>
+                                                                                <span t-field="shift.start_datetime" t-options='{"widget": "datetime", "format": "hh:mm a"}'/> - <span t-field="shift.end_datetime" t-options='{"widget": "datetime", "format": "hh:mm a"}'/>
+                                                                            </span>
+                                                                            
+                                                                            <!-- Role Badge -->
+                                                                            <span class="badge rounded-pill px-3 py-1 bg-dark text-white fw-bold small me-2 my-1">
+                                                                                <t t-esc="shift.role_id.name or 'Generalist'"/>
+                                                                            </span>
+                                                                        </div>
+                                                                        
+                                                                        <!-- Additional Context (Project/Task/Note) -->
+                                                                        <div class="d-flex flex-wrap gap-3 small text-muted">
+                                                                            <t t-if="'project_id' in shift._fields and shift.project_id">
+                                                                                <span><i class="fa fa-folder-open-o me-1"></i> <t t-esc="shift.project_id.name"/></span>
+                                                                            </t>
+                                                                            <t t-if="'task_id' in shift._fields and shift.task_id">
+                                                                                <span><i class="fa fa-tasks me-1"></i> <t t-esc="shift.task_id.name"/></span>
+                                                                            </t>
+                                                                        </div>
+                                                                        
+                                                                        <t t-if="shift.name">
+                                                                            <div class="mt-2 text-muted small border-top pt-2">
+                                                                                <i class="fa fa-sticky-note-o me-1"></i> <t t-esc="shift.name"/>
+                                                                            </div>
+                                                                        </t>
+                                                                    </div>
+                                                                    
+                                                                    <!-- Shift Hours Info -->
+                                                                    <div class="mt-3 mt-md-0 text-md-end">
+                                                                        <span class="badge bg-light text-dark border rounded-pill px-3 py-2 fw-bold">
+                                                                            <t t-esc="'%.1f' % (shift.allocated_hours or 0.0)"/> hrs
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </t>
+                                                    </t>
+
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- CRM Leads Page Template -->
+    <template id="portal_my_leads" name="My CRM Opportunities">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        
+                        <!-- Top Header & Create Button -->
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                            <div>
+                                <h2 class="fw-bold mb-1">CRM Opportunities</h2>
+                                <p class="text-muted small mb-0">Track and manage your customer pipeline and closed deals.</p>
+                            </div>
+                            <div class="mt-3 mt-md-0 d-flex gap-2">
+                                <button type="button" class="btn btn-primary rounded-pill px-4 py-2 fw-bold d-flex align-items-center shadow-sm" data-bs-toggle="modal" data-bs-target="#createLeadModal">
+                                    <i class="fa fa-plus me-2"></i> New Opportunity
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Success Notification -->
+                        <t t-if="success">
+                            <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-4 border-0 mb-4 p-3" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-check-circle fa-lg me-3"></i>
+                                    <strong>Success!</strong> New opportunity has been submitted and added to your pipeline.
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </t>
+
+                        <!-- Stats Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color: #714B64;color:#ffffff;">
+                                            <i class="fa fa-handshake-o fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Active Opportunities</h6>
+                                            <h3 class="fw-bold mb-0 text-dark" t-esc="total_opportunities"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color: #714B64;color:#ffffff;">
+                                            <i class="fa fa-usd fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Pipeline Value</h6>
+                                            <h3 class="fw-bold mb-0 text-dark" t-esc="pipeline_value_str"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color: #714B64;color:#ffffff;">
+                                            <i class="fa fa-trophy fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Win Rate</h6>
+                                            <h3 class="fw-bold mb-0 text-dark" t-esc="win_rate_str"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Search and Filter Bar -->
+                        <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white">
+                            <form method="get" action="/my/leads" class="row g-2 align-items-center">
+                                <input type="hidden" name="filterby" t-att-value="filterby"/>
+                                <div class="col-md-4">
+                                    <div class="btn-group w-100 rounded-pill p-1 border" style="background-color: #714B64;color:#ffffff;">
+                                        <a href="/my/leads?filterby=pipeline" t-attf-class="btn rounded-pill px-3 py-2 fw-bold text-sm text-center w-50 #{'btn-dark text-white' if filterby == 'pipeline' else 'btn-link text-muted text-decoration-none'}">
+                                            Active Pipeline
+                                        </a>
+                                        <a href="/my/leads?filterby=closed" t-attf-class="btn rounded-pill px-3 py-2 fw-bold text-sm text-center w-50 #{'btn-dark text-white' if filterby == 'closed' else 'btn-link text-muted text-decoration-none'}">
+                                            Closed Deals
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control rounded-start-pill border-end-0" placeholder="Search by Lead name, Customer or Email..." t-att-value="search or ''"/>
+                                        <button type="submit" class="btn btn-outline-secondary rounded-end-pill border-start-0 px-4 bg-white text-muted">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="/my/leads" class="btn btn-light rounded-pill px-3 py-2 w-100 fw-bold border">Reset</a>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Leads Grid List -->
+                        <div class="row">
+                            <t t-if="not leads">
+                                <div class="col-12 text-center py-5">
+                                    <div class="mb-3">
+                                        <i class="fa fa-folder-open-o fa-4x text-muted opacity-30"></i>
+                                    </div>
+                                    <h4 class="fw-bold text-dark">No Opportunities Found</h4>
+                                    <p class="text-muted">You do not have any leads matching this filter.</p>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="leads_data" t-as="ld">
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 shift-card bg-white">
+                                            <!-- Colored Accent top based on probability/stage -->
+                                            <div t-attf-class="p-2 #{'bg-success' if ld['lead'].stage_id.is_won else 'bg-primary' if ld['lead'].probability &gt; 50 else 'bg-warning'}"/>
+                                            <div class="card-body p-4 d-flex flex-column">
+                                                
+                                                <!-- Top Title & Stage Badge -->
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 170px;" t-esc="ld['lead'].name"/>
+                                                    <span t-attf-class="badge rounded-pill px-2 py-1 small fw-bold #{'bg-success-subtle text-success' if ld['lead'].stage_id.is_won else 'bg-primary-subtle text-primary' if ld['lead'].probability &gt; 50 else 'bg-warning-subtle text-warning'}" t-esc="ld['lead'].stage_id.name"/>
+                                                </div>
+
+                                                <!-- Customer Details -->
+                                                <div class="mb-4">
+                                                    <h6 class="text-muted mb-2 small"><i class="fa fa-building-o me-1"></i> <t t-esc="ld['lead'].partner_name or ld['lead'].contact_name or 'No Contact Name'"/></h6>
+                                                    <div class="text-muted small mb-1"><i class="fa fa-envelope-o me-1"></i> <t t-esc="ld['lead'].email_from or 'No email provided'"/></div>
+                                                    <div class="text-muted small"><i class="fa fa-phone me-1"></i> <t t-esc="ld['lead'].phone or 'No phone number'"/></div>
+                                                </div>
+
+                                                <!-- Financial / Probability Metrics -->
+                                                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <span class="text-muted small d-block">Expected Rev</span>
+                                                        <span class="fw-bold text-dark" t-esc="ld['expected_revenue_str']"/>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="text-muted small d-block">Probability</span>
+                                                        <span class="fw-bold text-primary" t-esc="ld['probability_str']"/>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Button to details -->
+                                                <a t-attf-href="/my/lead/#{ld['lead'].id}" class="btn btn-outline-dark rounded-pill w-100 py-2 mt-4 fw-bold shadow-xs">
+                                                    View Lead Board <i class="fa fa-arrow-right ms-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Lead Modal -->
+            <div class="modal fade" id="createLeadModal" tabindex="-1" aria-labelledby="createLeadModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content rounded-4 border-0 shadow-lg">
+                        <div class="modal-header border-0 bg-light p-4">
+                            <h4 class="modal-title fw-bold text-dark" id="createLeadModalLabel">
+                                <i class="fa fa-handshake-o text-primary me-2"></i> Submit New Opportunity
+                            </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" action="/my/leads">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="action" value="create_lead"/>
+                            <div class="modal-body p-4 bg-white">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label fw-bold">Opportunity Title <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" class="form-control form-control-lg rounded-3" placeholder="e.g. Cloud System Installation" required="required"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Company / Partner Name</label>
+                                        <input type="text" name="partner_name" class="form-control rounded-3" placeholder="e.g. Acme Corp"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Contact Person</label>
+                                        <input type="text" name="contact_name" class="form-control rounded-3" placeholder="e.g. John Doe"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Email Address</label>
+                                        <input type="email" name="email" class="form-control rounded-3" placeholder="e.g. john@acme.com"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Phone Number</label>
+                                        <input type="tel" name="phone" class="form-control rounded-3" placeholder="e.g. +1 555-0199"/>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label fw-bold">Expected Revenue ($)</label>
+                                        <input type="number" step="0.01" name="expected_revenue" class="form-control rounded-3" placeholder="e.g. 5000.00"/>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label fw-bold">Internal Description &amp; Notes</label>
+                                        <textarea name="description" class="form-control rounded-3" rows="4" placeholder="Describe the customer's requirements, next actions or meeting notes..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 p-4 bg-light">
+                                <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">Submit Lead</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Lead Detail Page Template -->
+    <template id="portal_lead_detail" name="Opportunity Detail Board">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        
+                        <!-- Navigation & Title -->
+                        <div class="mb-4">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/my/home"><i class="fa fa-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="/my/leads">Opportunities</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><t t-esc="lead.name"/></li>
+                                </ol>
+                            </nav>
+                            <h2 class="fw-bold text-dark mb-1" t-esc="lead.name"/>
+                            <p class="text-muted small">Assigned Sales Pipeline Resource Board</p>
+                        </div>
+
+                        <!-- Notes Log success -->
+                        <t t-if="success_note">
+                            <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-4 border-0 mb-4 p-3" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-check-circle fa-lg me-3"></i>
+                                    <strong>Success!</strong> Your update has been successfully logged to chatter history.
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </t>
+
+                        <!-- CRM Pipeline Stage Tracker -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+                            <h6 class="text-muted uppercase fw-bold mb-3 small">Pipeline Stage Tracker</h6>
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 border rounded-pill p-2" style="background-color: #714B64;color:#ffffff;">
+                                <t t-foreach="stages" t-as="stage">
+                                    <t t-set="is_active" t-value="lead.stage_id.id == stage.id"/>
+                                    <div t-attf-class="flex-fill text-center rounded-pill px-3 py-2 fw-bold text-xs #{'bg-primary text-white shadow-sm' if is_active else 'text-muted'}">
+                                        <i class="fa fa-dot-circle-o me-1" t-if="is_active"></i> <t t-esc="stage.name"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Left: Client Profile and Metrics -->
+                            <div class="col-lg-5 mb-4 mb-lg-0">
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Client Contact</h5>
+                                    
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color: #714B64;color:#ffffff;">
+                                            <i class="fa fa-building fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-1" t-esc="lead.partner_name or lead.contact_name or 'N/A'"/>
+                                            <span class="text-muted small">Company Profile</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span class="text-muted small">Contact Person:</span>
+                                            <span class="fw-bold text-dark" t-esc="lead.contact_name or 'N/A'"/>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3 border-top pt-2">
+                                            <span class="text-muted small">Email Address:</span>
+                                            <span class="fw-bold text-dark text-truncate" style="max-width: 180px;" t-esc="lead.email_from or 'N/A'"/>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3 border-top pt-2">
+                                            <span class="text-muted small">Phone Number:</span>
+                                            <span class="fw-bold text-dark" t-esc="lead.phone or 'N/A'"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <a t-if="lead.phone" t-attf-href="tel:#{lead.phone}" class="btn btn-outline-primary rounded-pill w-50 py-2 fw-bold shadow-xs">
+                                            <i class="fa fa-phone me-1"></i> Call Client
+                                        </a>
+                                        <a t-if="lead.email_from" t-attf-href="mailto:#{lead.email_from}" class="btn btn-outline-dark rounded-pill w-50 py-2 fw-bold shadow-xs">
+                                            <i class="fa fa-envelope-o me-1"></i> Email Client
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Financial Estimates</h5>
+                                    <div class="row text-center">
+                                        <div class="col-6 border-end">
+                                            <span class="text-muted small d-block mb-1">Expected Revenue</span>
+                                            <h4 class="fw-bold text-dark"><t t-esc="'$ ' + str(lead.expected_revenue or 0.0)"/></h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="text-muted small d-block mb-1">Probability</span>
+                                            <h4 class="fw-bold text-primary"><t t-esc="str(int(lead.probability or 0)) + '%'"/></h4>
+                                        </div>
+                                    </div>
+                                    <t t-if="lead.description">
+                                        <div class="mt-4 border-top pt-3">
+                                            <h6 class="fw-bold text-dark mb-2">Original Requirement:</h6>
+                                            <p class="text-muted small font-italic mb-0" style="white-space: pre-wrap;" t-esc="lead.description"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Right: Log Notes / Chatter Log -->
+                            <div class="col-lg-7">
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Opportunity Timeline &amp; Updates</h5>
+                                    
+                                    <!-- Log Notes Form -->
+                                    <form method="post" t-attf-action="/my/lead/#{lead.id}" class="mb-4">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="action" value="log_note"/>
+                                        <div class="form-group mb-3">
+                                            <textarea name="new_note" class="form-control rounded-3" rows="3" placeholder="Post a pipeline update, client meeting notes, or task progress here..." required="required"></textarea>
+                                        </div>
+                                        <div class="text-end">
+                                            <button type="submit" class="btn btn-dark rounded-pill px-4 fw-bold shadow-xs">Post Update</button>
+                                        </div>
+                                    </form>
+
+                                    <!-- Chatter Log -->
+                                    <div class="chatter-log overflow-auto" style="max-height: 400px;">
+                                        <t t-if="not lead.message_ids">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="fa fa-comments-o fa-2x mb-2 opacity-50"></i>
+                                                <div class="small">No logs recorded yet.</div>
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-foreach="lead.message_ids" t-as="msg">
+                                                <!-- Only display actual notifications and comments -->
+                                                <t t-if="msg.body and msg.subtype_id">
+                                                    <div class="d-flex align-items-start border-bottom py-3 last-mb-0">
+                                                        <div class="rounded-circle bg-light p-2 me-3 text-muted">
+                                                            <i class="fa fa-user-circle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                                <h6 class="fw-bold text-dark mb-0 small" t-esc="msg.author_id.name or 'System Update'"/>
+                                                                <span class="text-muted text-xs" t-field="msg.date" t-options='{"widget": "datetime", "format": "MMM d, h:mm a"}'/>
+                                                            </div>
+                                                            <div class="text-muted small" style="white-space: pre-wrap;" t-out="msg.body"/>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </t>
+    </template>
+
+    <!-- Sales List Page Template -->
+    <template id="portal_my_sales" name="My Sales">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        
+                        <!-- Top Header -->
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                            <div>
+                                <h2 class="fw-bold mb-1">Sales Pipeline</h2>
+                                <p class="text-muted small mb-0">Track and manage your assigned quotations and sales orders.</p>
+                            </div>
+                        </div>
+
+                        <!-- Stats Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color:#714B67;color:#fff;">
+                                            <i class="fa fa-shopping-bag fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Total Orders</h6>
+                                            <h3 class="fw-bold mb-0 text-dark" t-esc="total_orders"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color:#714B67;color:#fff;">
+                                            <i class="fa fa-usd fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Sales Value</h6>
+                                            <h3 class="fw-bold mb-0 text-dark" t-esc="sales_value_str"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle  p-3 me-3" style="background-color:#714B67;color:#fff;">
+                                            <i class="fa fa-check-circle fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-1 small uppercase fw-bold">Conversion Rate</h6>
+                                            <h3 class="fw-bold mb-0 text-dark" t-esc="conversion_rate_str"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Search and Filter Bar -->
+                        <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white">
+                            <form method="get" action="/my/sales" class="row g-2 align-items-center">
+                                <input type="hidden" name="filterby" t-att-value="filterby"/>
+                                <div class="col-md-4">
+                                    <div class="btn-group w-100 rounded-pill p-1  border" style="background-color:#714B67;">
+                                        <a href="/my/sales?filterby=all" t-attf-class="btn rounded-pill px-3 py-2 fw-bold text-sm text-center w-33 #{'btn-dark text-white' if filterby == 'all' or not filterby else 'btn-link text-muted text-decoration-none'}">
+                                            All
+                                        </a>
+                                        <a href="/my/sales?filterby=quotes" t-attf-class="btn rounded-pill px-3 py-2 fw-bold text-sm text-center w-33 #{'btn-dark text-white' if filterby == 'quotes' else 'btn-link text-muted text-decoration-none'}">
+                                            Quotations
+                                        </a>
+                                        <a href="/my/sales?filterby=orders" t-attf-class="btn rounded-pill px-3 py-2 fw-bold text-sm text-center w-33 #{'btn-dark text-white' if filterby == 'orders' else 'btn-link text-muted text-decoration-none'}">
+                                            Orders
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control rounded-start-pill border-end-0" placeholder="Search by Order reference, Client or Email..." t-att-value="search or ''"/>
+                                        <button type="submit" class="btn btn-outline-secondary rounded-end-pill border-start-0 px-4 bg-white text-muted">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="/my/sales" class="btn btn-light rounded-pill px-3 py-2 w-100 fw-bold border">Reset</a>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Listing Grid -->
+                        <div class="row">
+                            <t t-if="not orders_data">
+                                <div class="col-12 text-center py-5">
+                                    <div class="mb-3">
+                                        <i class="fa fa-folder-open-o fa-4x text-muted opacity-30"></i>
+                                    </div>
+                                    <h4 class="fw-bold text-dark">No Orders Found</h4>
+                                    <p class="text-muted">You do not have any sales orders matching this filter.</p>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="orders_data" t-as="od">
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 shift-card bg-white">
+                                            <!-- Colored Accent top based on state -->
+                                            <div t-attf-class="p-2 #{'bg-success' if od['order'].state in ('sale', 'done') else 'bg-warning' if od['order'].state in ('draft', 'sent') else 'bg-secondary'}"/>
+                                            <div class="card-body p-4 d-flex flex-column">
+                                                
+                                                <!-- Top Title & Stage Badge -->
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 170px;" t-esc="od['order'].name"/>
+                                                    <span t-attf-class="badge rounded-pill px-2 py-1 small fw-bold #{'bg-success-subtle text-success' if od['order'].state in ('sale', 'done') else 'bg-warning-subtle text-warning' if od['order'].state in ('draft', 'sent') else 'bg-secondary-subtle text-secondary'}" t-esc="dict(od['order']._fields['state'].selection).get(od['order'].state)"/>
+                                                </div>
+
+                                                <!-- Customer Details -->
+                                                <div class="mb-4">
+                                                    <h6 class="text-muted mb-2 small"><i class="fa fa-building-o me-1"></i> <t t-esc="od['order'].partner_id.name"/></h6>
+                                                    <div class="text-muted small mb-1"><i class="fa fa-envelope-o me-1"></i> <t t-esc="od['order'].partner_id.email or 'No email'"/></div>
+                                                    <div class="text-muted small"><i class="fa fa-phone me-1"></i> <t t-esc="od['order'].partner_id.phone or 'No phone'"/></div>
+                                                </div>
+
+                                                <!-- Financial Metrics -->
+                                                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <span class="text-muted small d-block">Order Total</span>
+                                                        <span class="fw-bold text-dark" t-esc="od['amount_total_str']"/>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="text-muted small d-block">Order Date</span>
+                                                        <span class="fw-bold text-dark" t-esc="od['date_order_str']"/>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Button to details -->
+                                                <a t-attf-href="/my/sales/#{od['order'].id}" class="btn btn-outline-dark rounded-pill w-100 py-2 mt-4 fw-bold shadow-xs">
+                                                    View Order <i class="fa fa-arrow-right ms-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Sales Order Details Page Template -->
+    <template id="portal_sale_detail" name="Sales Order Details">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <!-- Success Notification Banner -->
+                        <t t-if="success_note">
+                            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm p-4 mb-4 d-flex align-items-center" role="alert">
+                                <div class="rounded-circle bg-success text-white p-2 me-3 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                    <i class="fa fa-check"></i>
+                                </div>
+                                <div>
+                                    <strong class="d-block text-dark">Success!</strong>
+                                    <span class="text-muted small">Your update has been successfully logged to chatter history.</span>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="top: 24px; right: 24px;"></button>
+                            </div>
+                        </t>
+
+                        <!-- Breadcrumbs -->
+                        <nav aria-label="breadcrumb" class="mb-4">
+                            <ol class="breadcrumb bg-white rounded-pill shadow-xs px-4 py-3">
+                                <li class="breadcrumb-item"><a href="/my" class="text-muted text-decoration-none"><i class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="/my/sales" class="text-muted text-decoration-none fw-bold">Sales Pipeline</a></li>
+                                <li class="breadcrumb-item active text-dark fw-bold" aria-current="page" t-esc="order.name"/>
+                            </ol>
+                        </nav>
+
+                        <!-- Main Section -->
+                        <div class="row">
+                            <!-- Left Details Board -->
+                            <div class="col-lg-8 mb-4">
+                                <!-- Header Board -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h3 class="fw-bold text-dark mb-1" t-esc="order.name"/>
+                                            <p class="text-muted mb-0 small">Sales Order &amp; Quotations Management Board</p>
+                                        </div>
+                                        <span t-attf-class="badge rounded-pill px-3 py-2 small fw-bold #{'bg-success-subtle text-success' if order.state in ('sale', 'done') else 'bg-warning-subtle text-warning' if order.state in ('draft', 'sent') else 'bg-secondary-subtle text-secondary'}" t-esc="dict(order._fields['state'].selection).get(order.state)"/>
+                                    </div>
+                                    <hr class="opacity-50 my-3"/>
+                                    <div class="row g-3">
+                                        <div class="col-sm-6">
+                                            <span class="text-muted small d-block">Customer</span>
+                                            <strong class="text-dark" t-esc="order.partner_id.name"/>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="text-muted small d-block">Order Date</span>
+                                            <strong class="text-dark" t-esc="date_order_str"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Order Status Steps Progress Tracker -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+                                    <h6 class="text-muted uppercase fw-bold mb-3 small">Sales Lifecycle Tracker</h6>
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 border rounded-pill p-2" style="background-color:#714B67;">
+                                        <t t-foreach="['draft', 'sent', 'sale', 'done']" t-as="st">
+                                            <t t-set="is_active" t-value="order.state == st"/>
+                                            <div t-attf-class="flex-fill text-center rounded-pill px-3 py-2 fw-bold text-xs #{'bg-primary text-white shadow-sm' if is_active else 'text-muted'}">
+                                                <i class="fa fa-dot-circle-o me-1" t-if="is_active"></i> <t t-esc="dict(order._fields['state'].selection).get(st)"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- Order Lines (Products) List -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                    <h5 class="fw-bold text-dark mb-3">Order Items</h5>
+                                    <div class="table-responsive">
+                                        <table class="table align-middle">
+                                            <thead style="background-color:#714B67;color:#fff;">
+                                                <tr>
+                                                    <th class="border-0 rounded-start">Product</th>
+                                                    <th class="border-0">Description</th>
+                                                    <th class="border-0 text-center">Quantity</th>
+                                                    <th class="border-0 text-end">Unit Price</th>
+                                                    <th class="border-0 text-end rounded-end">Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="order.order_line" t-as="line">
+                                                    <tr>
+                                                        <td class="fw-bold text-dark" t-esc="line.product_id.name"/>
+                                                        <td class="text-muted small" t-esc="line.name"/>
+                                                        <td class="text-center" t-esc="line.product_uom_qty"/>
+                                                        <td class="text-end" t-esc="'$ %.2f' % line.price_unit"/>
+                                                        <td class="text-end fw-bold text-dark" t-esc="'$ %.2f' % line.price_subtotal"/>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Panel: Customer, Financials and Timeline -->
+                            <div class="col-lg-4">
+                                <!-- Customer Info Card -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Client Details</h5>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle  p-3 me-3 " style="background-color:#714B67;color:#fff;">
+                                            <i class="fa fa-user fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-1" t-esc="order.partner_id.name"/>
+                                            <span class="text-muted small">Company / Individual</span>
+                                        </div>
+                                    </div>
+                                    <div class="small">
+                                        <div class="mb-2"><i class="fa fa-envelope-o me-2 text-muted"></i> <t t-esc="order.partner_id.email or 'No email'"/></div>
+                                        <div class="mb-2"><i class="fa fa-phone me-2 text-muted"></i> <t t-esc="order.partner_id.phone or 'No phone'"/></div>
+                                        <div><i class="fa fa-map-marker me-2 text-muted"></i> <t t-esc="order.partner_id.contact_address or 'No address'"/></div>
+                                    </div>
+                                </div>
+
+                                <!-- Financial Estimates Card -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Order Summary</h5>
+                                    <div class="mb-2 d-flex justify-content-between">
+                                        <span class="text-muted small">Untaxed Amount:</span>
+                                        <span class="fw-bold text-dark" t-esc="amount_untaxed_str"/>
+                                    </div>
+                                    <div class="mb-2 d-flex justify-content-between">
+                                        <span class="text-muted small">Taxes:</span>
+                                        <span class="fw-bold text-dark" t-esc="amount_tax_str"/>
+                                    </div>
+                                    <hr class="opacity-50 my-2"/>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-dark fw-bold">Total Amount:</span>
+                                        <h4 class="fw-bold text-primary mb-0" t-esc="amount_total_str"/>
+                                    </div>
+                                </div>
+
+                                <!-- Timeline Note Logger / Chatter -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Order Updates &amp; Notes</h5>
+                                    
+                                    <form method="post" t-attf-action="/my/sales/#{order.id}" class="mb-4">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="action" value="log_note"/>
+                                        <div class="form-group mb-3">
+                                            <textarea name="new_note" class="form-control rounded-3" rows="3" placeholder="Post a pipeline update, client meeting notes, or task progress here..." required="required"></textarea>
+                                        </div>
+                                        <div class="text-end">
+                                            <button type="submit" class="btn btn-dark rounded-pill px-4 fw-bold shadow-xs">Post Update</button>
+                                        </div>
+                                    </form>
+
+                                    <div class="chatter-log overflow-auto" style="max-height: 300px;">
+                                        <t t-if="not order.message_ids">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="fa fa-comments-o fa-2x mb-2 opacity-50"></i>
+                                                <div class="small">No logs recorded yet.</div>
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-foreach="order.message_ids" t-as="msg">
+                                                <t t-if="msg.body and msg.subtype_id">
+                                                    <div class="d-flex align-items-start border-bottom py-3 last-mb-0">
+                                                        <div class="rounded-circle bg-light p-2 me-3 text-muted">
+                                                            <i class="fa fa-user-circle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                                <h6 class="fw-bold text-dark mb-0 small" t-esc="msg.author_id.name or 'System Update'"/>
+                                                                <span class="text-muted text-xs" t-field="msg.date" t-options='{"widget": "datetime", "format": "MMM d, h:mm a"}'/>
+                                                            </div>
+                                                            <div class="text-muted small" style="white-space: pre-wrap;" t-out="msg.body"/>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Announcements Listing Page -->
+    <template id="portal_my_announcements" name="Notice Board">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Notice Board</t>
+            </t>
+            
+            <div class="container mt-4 mb-5 o_portal_announcements_page">
+                <!-- Page Title -->
+                <div class="row mb-4 align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="fw-bold text-dark mb-1">Company Notice Board</h2>
+                        <p class="text-muted mb-0">Stay updated with the latest company news, notices, and events.</p>
+                    </div>
+                </div>
+
+                <!-- Notices Grid -->
+                <t t-if="announcements">
+                    <div class="row g-4">
+                        <t t-foreach="announcements" t-as="announcement">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 overflow-hidden o_announcement_card">
+                                    <!-- Banner Image or Placeholder -->
+                                    <div class="announcement-banner-container position-relative bg-light" style="height: 180px;">
+                                        <t t-if="announcement.image">
+                                            <img t-attf-src="data:image/png;base64,#{announcement.image}" class="w-100 h-100 object-fit-cover" alt="Banner"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-gradient text-white" 
+                                                 style="background: linear-gradient(135deg, #71639e 0%, #a29bfe 100%);">
+                                                <i class="fa fa-bullhorn fa-3x mb-2"></i>
+                                                <span class="small font-weight-bold uppercase tracking-wider">Announcement</span>
+                                            </div>
+                                        </t>
+                                        <span class="position-absolute top-0 end-0 m-3 badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill font-weight-bold text-xs">
+                                            <i class="fa fa-calendar me-1 text-primary"></i>
+                                            <span t-field="announcement.date_published" t-options='{"widget": "date", "format": "MMM d, YYYY"}'/>
+                                        </span>
+                                    </div>
+
+                                    <!-- Card Content -->
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <h4 class="card-title fw-bold text-dark mb-2 text-truncate-2" t-esc="announcement.name"/>
+                                        <p class="card-text text-muted small flex-grow-1 text-truncate-3" t-esc="announcement.summary or 'No summary provided.'"/>
+
+
+                                        <a t-attf-href="/my/announcements/#{announcement.id}" class="btn btn-outline-primary w-100 fw-bold py-2 mt-auto" style="border-radius: 8px;">
+                                            Read Full Notice <i class="fa fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class="card border-0 shadow-sm py-5 text-center bg-white">
+                        <div class="card-body">
+                            <i class="fa fa-bell-slash-o fa-4x text-muted mb-3"></i>
+                            <h4 class="fw-bold text-dark">No Active Announcements</h4>
+                            <p class="text-muted">There are no notices posted on the board at this moment.</p>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- Announcement Detail Page -->
+    <template id="portal_my_announcement_detail" name="Announcement Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title" t-value="announcement.name"/>
+            </t>
+            
+            <div class="container mt-4 mb-5 o_portal_announcement_detail_page">
+                <div class="row justify-content-center">
+                    <div class="col-lg-9">
+                        <!-- Back Button & Breadcrumbs -->
+                        <div class="mb-4">
+                            <a href="/my/announcements" class="btn btn-link text-decoration-none p-0 fw-bold">
+                                <i class="fa fa-arrow-left me-1"></i> Back to Notice Board
+                            </a>
+                        </div>
+
+                        <!-- Main Content Card -->
+                        <div class="card shadow-sm border-0 overflow-hidden mb-4 bg-white">
+                            <!-- Banner Image on top if exists -->
+                            <t t-if="announcement.image">
+                                <div class="detail-banner-container" style="height: 350px;">
+                                    <img t-attf-src="data:image/png;base64,#{announcement.image}" class="w-100 h-100 object-fit-cover" alt="Banner"/>
+                                </div>
+                            </t>
+
+                            <div class="card-body p-5">
+                                <!-- Meta Information -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <span class="badge bg-primary py-2 px-3 rounded-pill me-3">
+                                        <i class="fa fa-calendar me-1"></i>
+                                        <span t-field="announcement.date_published" t-options='{"widget": "datetime", "format": "MMMM d, YYYY"}'/>
+                                    </span>
+
+                                </div>
+
+                                <!-- Announcement Title -->
+                                <h1 class="fw-bold text-dark mb-4" t-esc="announcement.name"/>
+                                <hr class="my-4"/>
+
+                                <!-- Announcement Body -->
+                                <div class="announcement-html-body text-dark" style="line-height: 1.8rem; font-size: 1.1rem;">
+                                    <t t-out="announcement.content"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Discussion Chatter Thread -->
+                        <div id="portal_announcement_chatter" class="card shadow-sm border-0 bg-white">
+                            <div class="card-body p-5">
+                                <h4 class="fw-bold text-dark mb-4"><i class="fa fa-comments me-2 text-primary"></i>Comments &amp; Discussion</h4>
+                                <t t-call="portal.message_thread">
+                                    <t t-set="object" t-value="announcement"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Announcement Breadcrumbs -->
+    <template id="portal_breadcrumbs_announcement" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'announcements'" t-attf-class="breadcrumb-item #{'active' if not announcement else ''}">
+                <a t-if="announcement" href="/my/announcements">Notice Board</a>
+                <t t-else="">Notice Board</t>
+            </li>
+            <li t-if="page_name == 'announcements' and announcement" class="breadcrumb-item active">
+                <span t-esc="announcement.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- Collapsible Left Sidebar for All Employee Portal Subpages    -->
+    <!-- ============================================================ -->
+    <template id="portal_layout_employee_sidebar" inherit_id="portal.portal_layout" priority="10">
+        <!-- Dynamically add 'has-employee-sidebar' class to #wrap when on a subpage -->
+        <xpath expr="//div[@id='wrap']" position="attributes">
+            <attribute name="t-attf-class">o_portal_wrap#{' has-employee-sidebar' if (page_name and page_name not in ('home',) and employee and employee.grant_portal_access) else ''}</attribute>
+        </xpath>
+
+        <!-- Inject sidebar BEFORE #wrap so CSS sibling selector works -->
+        <xpath expr="//div[@id='wrap']" position="before">
+            <t t-if="page_name and page_name not in ('home',) and employee and employee.grant_portal_access">
+                <div class="employee-portal-sidebar d-none d-lg-flex flex-column">
+
+                    <!-- Portal Home / Brand -->
+                    <a href="/my" class="sidebar-brand d-flex align-items-center px-4 py-3 text-decoration-none">
+                        <i class="fa fa-th-large" style="font-size:20px; color:#714B67; flex-shrink:0;"/>
+                        <span class="brand-text ms-3 fw-bold" style="color:#714B67; font-size:0.95rem;">Portal Home</span>
+                    </a>
+
+                    <!-- Navigation Items -->
+                    <div class="sidebar-nav d-flex flex-column py-1 flex-grow-1">
+
+                        <!-- My Profile -->
+                        <t t-if="not employee or employee.portal_show_profile">
+                            <a href="/my/profile"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'my_profile' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/profile.png"
+                                     class="sidebar-icon" alt="Profile"/>
+                                <span class="sidebar-text ms-3">My Profile</span>
+                            </a>
+                        </t>
+
+                        <!-- Attendance -->
+                        <t t-if="not employee or employee.portal_show_attendance">
+                            <a href="/my/attendance"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'attendance' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/Attendense.png"
+                                     class="sidebar-icon" alt="Attendance"/>
+                                <span class="sidebar-text ms-3">Attendance</span>
+                            </a>
+                        </t>
+
+                        <!-- Leaves -->
+                        <t t-if="not employee or employee.portal_show_leaves">
+                            <a href="/my/leaves"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'leaves' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/time off.png"
+                                     class="sidebar-icon" alt="Leaves"/>
+                                <span class="sidebar-text ms-3">Leaves</span>
+                            </a>
+                        </t>
+
+                        <!-- Timesheets -->
+                        <t t-if="not employee or employee.portal_show_timesheets">
+                            <a href="/my/timesheets"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'timesheets' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/timesheets.png"
+                                     class="sidebar-icon" alt="Timesheets"/>
+                                <span class="sidebar-text ms-3">Timesheets</span>
+                            </a>
+                        </t>
+
+                        <!-- Project Tasks -->
+                        <t t-if="not employee or employee.portal_show_tasks">
+                            <a href="/my/tasks"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'tasks' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/tasks.png"
+                                     class="sidebar-icon" alt="Tasks"/>
+                                <span class="sidebar-text ms-3">Project Tasks</span>
+                            </a>
+                        </t>
+
+                        <!-- Expenses -->
+                        <t t-if="not employee or employee.portal_show_expenses">
+                            <a href="/my/expenses"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'expenses' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/expense.png"
+                                     class="sidebar-icon" alt="Expenses"/>
+                                <span class="sidebar-text ms-3">Expenses</span>
+                            </a>
+                        </t>
+
+                        <!-- Payslips -->
+                        <t t-if="not employee or employee.portal_show_payroll">
+                            <a href="/my/payroll"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'payroll' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/payroll.png"
+                                     class="sidebar-icon" alt="Payslips"/>
+                                <span class="sidebar-text ms-3">Payslips</span>
+                            </a>
+                        </t>
+
+                        <!-- Schedule -->
+                        <t t-if="not employee or employee.portal_show_schedule">
+                            <a href="/my/schedule"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'schedule' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/schedule.png"
+                                     class="sidebar-icon" alt="Schedule"/>
+                                <span class="sidebar-text ms-3">Schedule</span>
+                            </a>
+                        </t>
+
+                        <!-- Sale Orders -->
+                        <t t-if="not employee or employee.portal_show_sales">
+                            <a href="/my/sales"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'sale_orders' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/sale.png"
+                                     class="sidebar-icon" alt="Sales"/>
+                                <span class="sidebar-text ms-3">Sale Orders</span>
+                            </a>
+                        </t>
+
+                        <!-- Leads / CRM -->
+                        <t t-if="not employee or employee.portal_show_crm">
+                            <a href="/my/leads"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'crm_leads' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/crm.png"
+                                     class="sidebar-icon" alt="Leads"/>
+                                <span class="sidebar-text ms-3">Leads</span>
+                            </a>
+                        </t>
+
+                        <!-- Notice Board -->
+                        <t t-if="not employee or employee.portal_show_announcement">
+                            <a href="/my/announcements"
+                               t-attf-class="sidebar-item d-flex align-items-center px-4 py-2 text-decoration-none #{'active' if page_name == 'announcements' else ''}">
+                                <img src="/All_in_one_employee_portal/static/description/announcement.png"
+                                     class="sidebar-icon" alt="Notice Board"/>
+                                <span class="sidebar-text ms-3">Notice Board</span>
+                            </a>
+                        </t>
+
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
